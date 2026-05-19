@@ -17,6 +17,7 @@ jobs:
   publish:
     name: Build and push Docker images
     runs-on: ubuntu-latest
+    if: ${{ secrets.DOCKERHUB_USERNAME != '' && secrets.DOCKERHUB_TOKEN != '' }}
     environment: ${{ github.ref_name == 'develop' && 'development' || github.ref_name == 'release' && 'staging' || 'production' }}
     strategy:
       matrix:
