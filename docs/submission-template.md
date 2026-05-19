@@ -2,7 +2,7 @@
 
 ## Project URLs
 
-- GitHub Repository URL:
+- GitHub Repository URL: https://github.com/hashirjutt13/cloud-native-microservices-devops-project
 - Docker Hub Repository URL:
 - Development Environment URL:
 - QA/Staging Environment URL:
