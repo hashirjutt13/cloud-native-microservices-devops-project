@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: cloud-final-frontend-development
+    runtime: docker
+    rootDir: frontend
+    branch: develop
+    plan: free
+    healthCheckPath: /health
+
+  - type: web
+    name: cloud-final-frontend-staging
+    runtime: docker
+    rootDir: frontend
+    branch: release
+    plan: free
+    healthCheckPath: /health
+
+  - type: web
+    name: cloud-final-frontend-production
+    runtime: docker
+    rootDir: frontend
+    branch: main
+    plan: free
+    healthCheckPath: /health

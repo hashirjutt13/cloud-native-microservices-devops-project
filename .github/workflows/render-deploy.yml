@@ -1,0 +1,38 @@
+name: Render Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+      - release
+      - main
+      - production
+
+jobs:
+  deploy-development:
+    name: Deploy development
+    if: github.ref_name == 'develop'
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - name: Trigger Render development deploy
+        run: curl -fsSL -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+
+  deploy-staging:
+    name: Deploy staging
+    if: github.ref_name == 'release'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Trigger Render staging deploy
+        run: curl -fsSL -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+
+  deploy-production:
+    name: Deploy production
+    if: github.ref_name == 'main' || github.ref_name == 'production'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Trigger Render production deploy
+        run: curl -fsSL -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"

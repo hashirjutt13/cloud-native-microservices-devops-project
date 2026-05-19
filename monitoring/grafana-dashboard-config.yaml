@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-notes
+data:
+  dashboard.md: |
+    Suggested panels:
+    - Service health by endpoint.
+    - Deployment replica counts.
+    - CPU and memory usage per microservice.
+    - Order creation and notification confirmation rates.

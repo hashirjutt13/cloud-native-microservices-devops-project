@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service-canary
+  labels:
+    app: order-service
+    track: canary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-service
+      track: canary
+  template:
+    metadata:
+      labels:
+        app: order-service
+        track: canary
+    spec:
+      containers:
+        - name: order-service
+          image: your-dockerhub-username/cloud-final-order-service:canary
+          ports:
+            - containerPort: 3003
+          envFrom:
+            - configMapRef:
+                name: cloud-final-config
+            - secretRef:
+                name: cloud-final-secrets

@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - develop
+      - release
+      - main
+      - production
+
+jobs:
+  lint-and-test:
+    name: Lint and test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+  docker-build:
+    name: Docker build verification
+    runs-on: ubuntu-latest
+    needs: lint-and-test
+    strategy:
+      matrix:
+        image:
+          - { name: frontend, context: frontend }
+          - { name: user-service, context: services/user }
+          - { name: product-service, context: services/product }
+          - { name: order-service, context: services/order }
+          - { name: notification-service, context: services/notification }
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build ${{ matrix.image.name }}
+        run: docker build -t local/${{ matrix.image.name }}:${{ github.sha }} ${{ matrix.image.context }}

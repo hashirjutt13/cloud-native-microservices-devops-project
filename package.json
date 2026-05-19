@@ -1,0 +1,22 @@
+{
+  "name": "cloud-native-microservices-devops-project",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cloud Computing final project: Dockerized microservices, frontend dashboard, CI/CD, Jenkins, Kubernetes, and Render deployment artifacts.",
+  "workspaces": [
+    "frontend",
+    "services/*"
+  ],
+  "scripts": {
+    "dev": "docker compose up --build",
+    "dev:node": "node scripts/start-local.mjs",
+    "lint": "npm run lint --workspaces && node scripts/lint-k8s.mjs",
+    "test": "npm run test --workspaces --if-present",
+    "check": "npm run lint && npm test",
+    "docker:build": "node scripts/build-images.mjs",
+    "k8s:dry-run": "kubectl apply --dry-run=client -k k8s/environments/development"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

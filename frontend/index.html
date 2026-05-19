@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cloud Commerce DevOps Dashboard</title>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body>
+    <aside class="sidebar" aria-label="Primary navigation">
+      <div class="brand">
+        <span class="brand-mark">CC</span>
+        <div>
+          <strong>Cloud Commerce</strong>
+          <small>DevOps Dashboard</small>
+        </div>
+      </div>
+      <nav>
+        <a href="#dashboard" data-route="dashboard">Dashboard</a>
+        <a href="#users" data-route="users">Users</a>
+        <a href="#products" data-route="products">Products</a>
+        <a href="#orders" data-route="orders">Orders</a>
+        <a href="#notifications" data-route="notifications">Notifications</a>
+      </nav>
+    </aside>
+
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Development · Staging · Production</p>
+          <h1 id="page-title">Dashboard</h1>
+        </div>
+        <button id="refresh-status" type="button">Refresh status</button>
+      </header>
+
+      <section id="status-grid" class="status-grid" aria-live="polite"></section>
+      <section id="view" class="view"></section>
+    </main>
+
+    <script src="assets/env.js"></script>
+    <script type="module" src="assets/app.js"></script>
+  </body>
+</html>

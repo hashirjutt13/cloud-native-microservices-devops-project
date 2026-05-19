@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cloud-final-deployer
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: cloud-final-deployer
+rules:
+  - apiGroups: ["", "apps", "networking.k8s.io", "autoscaling"]
+    resources: ["configmaps", "deployments", "horizontalpodautoscalers", "ingresses", "pods", "secrets", "services"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cloud-final-deployer
+subjects:
+  - kind: ServiceAccount
+    name: cloud-final-deployer
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cloud-final-deployer
