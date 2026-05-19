@@ -12,12 +12,12 @@ on:
 
 env:
   REGISTRY_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKERHUB_TOKEN_SET: ${{ secrets.DOCKERHUB_TOKEN }}
 
 jobs:
   publish:
     name: Build and push Docker images
     runs-on: ubuntu-latest
-    if: ${{ secrets.DOCKERHUB_USERNAME != '' && secrets.DOCKERHUB_TOKEN != '' }}
     environment: ${{ github.ref_name == 'develop' && 'development' || github.ref_name == 'release' && 'staging' || 'production' }}
     strategy:
       matrix:
@@ -28,16 +28,23 @@ jobs:
           - { name: order-service, context: services/order }
           - { name: notification-service, context: services/notification }
     steps:
+      - name: Skip until Docker Hub secrets are configured
+        if: ${{ env.REGISTRY_USER == '' || env.DOCKERHUB_TOKEN_SET == '' }}
+        run: echo "Docker Hub secrets are not configured yet; skipping image publish."
+
       - name: Checkout
+        if: ${{ env.REGISTRY_USER != '' && env.DOCKERHUB_TOKEN_SET != '' }}
         uses: actions/checkout@v4
 
       - name: Login to Docker Hub
+        if: ${{ env.REGISTRY_USER != '' && env.DOCKERHUB_TOKEN_SET != '' }}
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Docker metadata
+        if: ${{ env.REGISTRY_USER != '' && env.DOCKERHUB_TOKEN_SET != '' }}
         id: meta
         uses: docker/metadata-action@v5
         with:
@@ -48,6 +55,7 @@ jobs:
             type=semver,pattern={{version}}
 
       - name: Build and push
+        if: ${{ env.REGISTRY_USER != '' && env.DOCKERHUB_TOKEN_SET != '' }}
         uses: docker/build-push-action@v6
         with:
           context: ${{ matrix.image.context }}

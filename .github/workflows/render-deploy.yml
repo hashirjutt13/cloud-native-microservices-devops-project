@@ -12,27 +12,48 @@ on:
 jobs:
   deploy-development:
     name: Deploy development
-    if: ${{ github.ref_name == 'develop' && secrets.RENDER_DEPLOY_HOOK != '' }}
+    if: github.ref_name == 'develop'
     runs-on: ubuntu-latest
     environment: development
     steps:
       - name: Trigger Render development deploy
-        run: curl -fsSL -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK" ]; then
+            echo "Render deploy hook is not configured yet; skipping development deploy."
+            exit 0
+          fi
+          curl -fsSL -X POST "$RENDER_DEPLOY_HOOK"
 
   deploy-staging:
     name: Deploy staging
-    if: ${{ github.ref_name == 'release' && secrets.RENDER_DEPLOY_HOOK != '' }}
+    if: github.ref_name == 'release'
     runs-on: ubuntu-latest
     environment: staging
     steps:
       - name: Trigger Render staging deploy
-        run: curl -fsSL -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK" ]; then
+            echo "Render deploy hook is not configured yet; skipping staging deploy."
+            exit 0
+          fi
+          curl -fsSL -X POST "$RENDER_DEPLOY_HOOK"
 
   deploy-production:
     name: Deploy production
-    if: ${{ (github.ref_name == 'main' || github.ref_name == 'production') && secrets.RENDER_DEPLOY_HOOK != '' }}
+    if: github.ref_name == 'main' || github.ref_name == 'production'
     runs-on: ubuntu-latest
     environment: production
     steps:
       - name: Trigger Render production deploy
-        run: curl -fsSL -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK" ]; then
+            echo "Render deploy hook is not configured yet; skipping production deploy."
+            exit 0
+          fi
+          curl -fsSL -X POST "$RENDER_DEPLOY_HOOK"
