@@ -3,7 +3,8 @@ import express from "express";
 
 const notifications = [
   { id: "n-400", type: "order-confirmation", target: "u-100", message: "Order o-300 confirmed" },
-  { id: "n-401", type: "inventory-alert", target: "ops", message: "Developer Laptop inventory below threshold" }
+  { id: "n-401", type: "inventory-alert", target: "ops", message: "Developer Laptop inventory below threshold" },
+  { id: "n-402", type: "system-alert", target: "ops", message: "Deployment pipeline verified by Abdul Hadi" }
 ];
 
 export function createApp() {
