@@ -4,7 +4,8 @@ import express from "express";
 const products = [
   { id: "p-200", name: "Wireless Keyboard", category: "accessories", price: 45, inventory: 28 },
   { id: "p-201", name: "USB-C Dock", category: "accessories", price: 89, inventory: 14 },
-  { id: "p-202", name: "Developer Laptop", category: "computers", price: 1199, inventory: 6 }
+  { id: "p-202", name: "Developer Laptop", category: "computers", price: 1199, inventory: 6 },
+  { id: "p-203", name: "Gaming Mouse", category: "accessories", price: 35, inventory: 20 }
 ];
 
 export function createApp() {
